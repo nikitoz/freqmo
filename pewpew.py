@@ -32,11 +32,11 @@ def get_data(words):
 		print e
 	return retval
 
-def pass_to_show(data):
+def pass_to_show(data, ext):
 	for key in data:
 		xs = sorted(data[key].keys())
 		ys = map(lambda x : data[key][x], xs)
-		draw_xkcd(xs, ys, unicode('время', 'UTF-8'), unicode('частота', 'UTF-8'), unicode(key, 'UTF-8'))
+		draw_xkcd(xs, ys, unicode('время', 'UTF-8'), unicode('частота', 'UTF-8'), unicode(key, 'UTF-8'), ext)
 
 pass_to_show(get_data([
 						'украина'
@@ -54,4 +54,4 @@ pass_to_show(get_data([
 						, 'хунта'
 						, 'санкция'
 						, 'фашист'
-				   ]))
+				   ]), '.svg')
