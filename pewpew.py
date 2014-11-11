@@ -7,7 +7,8 @@ def get_data_single(word, collection):
 	r = collection.find({"data.words" : word}, {"data.occurrences.$":1, "date":1})
 	retval = {}
 	for doc in r:
-		cdate = doc['date']
+		#print doc
+		cdate = doc['date'].date()
 		occ = doc['data']['occurrences'][0]
 		if (cdate in retval):
 			retval[cdate] = retval[cdate] + int(occ)
@@ -26,7 +27,6 @@ def get_data(words):
 		authed = client['mmwocdb'].authenticate('public', 'public')
 		for word in words:
 			t = get_data_single(word, client['mmwocdb'].graph)
-			#print t
 			retval[word] = t
 	except pymongo.errors.PyMongoError as e:
 		print e
@@ -34,10 +34,24 @@ def get_data(words):
 
 def pass_to_show(data):
 	for key in data:
-		xxs = sorted(data[key].keys())
-		xs = map(lambda x : time.mktime(x.timetuple()), xxs)
-		ys = map(lambda x : data[key][x], xxs)
+		xs = sorted(data[key].keys())
+		ys = map(lambda x : data[key][x], xs)
 		draw_xkcd(xs, ys, unicode('время', 'UTF-8'), unicode('частота', 'UTF-8'), unicode(key, 'UTF-8'))
 
-pass_to_show(get_data([ 'украина']))
-#draw_xkcd([1,2,3], [1,2,3], 'hello', 'world', 'hey')
+pass_to_show(get_data([
+						'украина'
+						, 'россия'
+						, 'рубль'
+						, 'доллар'
+						, 'сша'
+						, 'ополченец'
+						, 'днр'
+						, 'война'
+						, 'мир'
+						, 'путин'
+						, 'крым'
+						, 'газ'
+						, 'хунта'
+						, 'санкция'
+						, 'фашист'
+				   ]))
